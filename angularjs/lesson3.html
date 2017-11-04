@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>lesson3</title>
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+</head>
+<body>
+<!-- 
+本实例知识点：
+子控制类可继承父控制类,父控制类不能继承子控制
+-->
+	<div ng-controller="parentcontroller">
+		{{text}}
+		<input type="button" ng-click="click('父亲')" value="点击" />
+		<div ng-controller="childcontroller">
+			{{text}}
+			<input type="button" ng-click="click('孩子')" value="点击" />
+		</div>
+	</div>
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		app.controller("parentcontroller",function($scope){
+			$scope.text = "父亲";
+			$scope.click = function(data){
+				$scope.text = data;
+			}
+		});
+		app.controller("childcontroller",function($scope){
+			$scope.text = "孩子";
+		});		
+	</script>
+</body>
+</html>
+
+
+
