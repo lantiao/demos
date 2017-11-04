@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>lesson2</title>
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+</head>
+<body>
+<!-- 
+本实例知识点：
+.. as .. for .. in ..
+.. as .. for .. group by .. for .. in ..
+ng-repeat
+ng-options
+ng-change
+-->
+	<div ng-controller="divcontroller">
+		列表
+		<div>
+			<ul>
+				<li ng-repeat="v in data">
+					<span>{{v.id}}--{{v.name}}--{{v.age}}</span>
+				</li>
+			</ul>
+		</div>
+		下拉菜单
+		<div>
+			<select ng-model="s" ng-options="v.id as v.name for v in data">
+				<option value="">--选择--</option>
+			</select>
+			<div>你选择了:{{s}}</div>
+		</div>
+		<hr>
+		分组下拉菜单
+		<div>
+			<select ng-model="d" ng-options="v.id as v.name group by v.city for v in a_data" ng-change="change(d)">
+				<option value="">--选择--</option>
+			</select>
+			<div>你选择了:{{d}}</div>
+			<div>菜单名称:{{txt}}</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		app.controller("divcontroller",function($scope){
+			$scope.data = [
+				{id:1,name:"李蕾",age:11},
+				{id:2,name:"韩梅梅",age:12},
+				{id:3,name:"波利",age:9}
+			];
+			$scope.a_data = [
+				{id:1,name:"厦门",city:"福建"},
+				{id:2,name:"三明",city:"福建"},
+				{id:3,name:"福州",city:"福建"},
+				{id:4,name:"东莞",city:"广州"},
+				{id:5,name:"汕头",city:"广州"},
+				{id:6,name:"北京",city:"北京"}
+			];
+			$scope.change = function(id){
+				for(var i in $scope.a_data){
+					v = $scope.a_data[i];
+					if(v.id == id){
+						$scope.txt = v.name;
+					}
+				}
+				
+			}
+		});
+		
+	</script>
+</body>
+</html>
+
+
+
