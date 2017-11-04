@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>lesson1</title>
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+</head>
+<body>
+<!-- 
+本实例知识点：
+angular.module
+app.controller
+{{}}
+$scope $windows
+ng-app
+ng-controller 
+ng-model
+ng-click
+-->
+	<div ng-controller="divcontroller">
+		<div>
+			<div>
+				<input type="text" ng-model="name">
+			</div>
+			<div>
+				<input type="text" ng-model="name">
+			</div>
+			<div>{{name}}</div>
+			<input type="button" ng-click="click()" value="点击">
+		</div>
+		
+	</div>
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		app.controller("divcontroller",function($window,$scope){
+			$scope.name = "lantiao";
+			$scope.click = function(){
+				$window.alert("你点击了按钮,值:"+$scope.name);
+			}
+		});
+		
+	</script>
+</body>
+</html>
+
+
+
