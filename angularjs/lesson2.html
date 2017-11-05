@@ -7,7 +7,9 @@
 <body>
 <!-- 
 本实例知识点：
-{{exp|number:n}}  orderBy limitTo
+{{数据|filter:对象}}
+{{数据|filter:函数名称}}
+{{exp|number:n}}  orderBy limitTo filter
 .. in .. 
 .. as .. for .. in ..
 .. as .. for .. group by .. for .. in ..
@@ -24,7 +26,8 @@ ng-class
 		列表
 		<div>
 			<ul>
-				<li ng-repeat="v in data|orderBy:'-age'|limitTo:3">
+				<!-- 通过key/value方式声明属性名称和匹配的字符内容,如果属性名称为"$" -->
+				<li ng-repeat="v in data|orderBy:'-age'|limitTo:3|filter:{$:19}">
 
 					<div ng-switch on="{{$index+1}}">
 						<span ng-switch-when=1>case 1</span>
