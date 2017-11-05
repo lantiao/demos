@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>lesson7</title> 
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular-route.min.js"></script>
+</head>
+<body>
+<!-- 
+本实例知识点：
+view组件切换模板
+ngRoute
+$routeProvider.when(链接地址,对象).when(链接地址,对象).otherwise(对象)
+-->
+	<div>
+		<div>
+			<a href="#/">首页</a> | 
+			<a href="#/list">列表</a> | 
+			<a href="#/detail">内容</a> | 
+			<a href="#/ok">其它</a> 
+		</div>
+	</div>
+	<div ng-view></div>
+	<script type="text/javascript">
+		var app = angular.module('myApp', ['ngRoute']);
+		app.controller("indexcontroller",function($scope){
+			$scope.title = "首页";
+		})
+		app.controller("listcontroller",function($scope){
+			$scope.title = "列表页";
+		})
+		app.controller("detailcontroller",function($scope){
+			$scope.title = "内容页";
+		})
+		app.config(function($routeProvider){
+			$routeProvider.when("/",{
+				controller:"indexcontroller",
+				template:"<div>{{title}}</div>"
+			}).when("/list",{
+				controller:"listcontroller",
+				template:"<div>{{title}}</div>"
+			}).when("/detail",{
+				controller:"detailcontroller",
+				template:"<div>{{title}}</div>"
+			}).otherwise({
+				redirectTo:"/"
+			});			
+		})
+	</script>
+</body>
+</html>
+
+
+
