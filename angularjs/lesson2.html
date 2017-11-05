@@ -7,7 +7,8 @@
 <body>
 <!-- 
 本实例知识点：
-{{exp|number:n}}
+{{exp|number:n}}  orderBy limitTo
+.. in .. 
 .. as .. for .. in ..
 .. as .. for .. group by .. for .. in ..
 ng-repeat  $index $first $last $middle ?:
@@ -23,7 +24,7 @@ ng-class
 		列表
 		<div>
 			<ul>
-				<li ng-repeat="v in data">
+				<li ng-repeat="v in data|orderBy:'-age'|limitTo:3">
 
 					<div ng-switch on="{{$index+1}}">
 						<span ng-switch-when=1>case 1</span>
