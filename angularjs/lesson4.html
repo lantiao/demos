@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>lesson4</title>
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+</head>
+<body>
+<!-- 
+本实例知识点：
+监控 $scope.$watch(modelName,func) ,计数
+作用域继承关系
+作用域事件的传播 1. 服务 2.事件
+$broadcast(eventname,data) 将事件从父级作用域传播至子级作用域
+$emit(eventname,data) 将事件从子级作用域传播至父级作用域
+监听传播过来的事件
+$on(eventname,function(event,data){
+	//处理传播过来的事件
+})
+-->
+	<div ng-controller="shcoolcontroller">
+		<!-- $watch事件 -->
+		<div>
+			<span><input type="text" ng-model="txt" /></span>
+			<span><input type="button" value="清空次数" ng-click="resetClick()" /></span>
+		</div>
+		<div><span>修改了{{num}}次</span></div>		
+
+
+		<input type="button" value="发送学校事件给各班级" ng-click="click()">
+		{{backmsg}}
+
+		<!-- 作用域 父层无法继承子层的属性和方法 -->
+		{{sname}}--->{{cname}}
+		<!-- 作用域 子层可以继承父层的所有属性和方法 -->
+		<div ng-controller="class1controller">
+			{{sname}}-{{cname}}
+			<input type="button" value="发送事件" ng-click="click1()">
+			{{msg}}
+		</div>
+		<div ng-controller="class2controller">
+			{{sname}}-{{cname}}
+			<input type="button" value="发送事件" ng-click="click2()">
+			{{msg}}
+		</div>
+	</div>
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		app.controller("shcoolcontroller",function($scope){
+			$scope.sname = "第一中学";
+			$scope.num = 0;
+			
+			$scope.resetClick = function(){
+				$scope.txt = "";
+				$scope.num = 0;
+			}
+			$scope.$watch("txt",function(){
+				$scope.num++;
+			});	
+			$scope.click = function(){
+				console.log("click");
+				$scope.$broadcast('s_event',"学校将改名,各班级你们同意么？");
+			}
+			$scope.$on("s_back",function(event,data){
+				console.log(event);
+				$scope.backmsg = "听班级反馈:"+data;
+			})						
+		});
+		app.controller("class1controller",function($scope){
+			$scope.cname = "1班";
+			$scope.$on("s_event",function(event,data){
+				console.log(event);
+				$scope.msg = "听学校领导说:"+data;
+			})
+			$scope.click1 = function(){
+				$scope.$emit("s_back","1班不同意.");
+			}
+		});	
+		app.controller("class2controller",function($scope){
+			$scope.cname = "2班";
+			$scope.$on("s_event",function(event,data){
+				$scope.msg = "听学校领导说:"+data;
+			})
+			$scope.click2 = function(){
+				$scope.$emit("s_back","2班同意.");
+			}
+		});		
+	</script>
+</body>
+</html>
+
+
+
