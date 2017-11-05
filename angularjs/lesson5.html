@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>lesson5</title>
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+</head>
+<body>
+<!-- 
+本实例知识点：
+依赖注入
+config(function($controllerProvider){
+	...
+})
+$controllerProvider.register("控制器名",function($scope){
+	...
+})
+
+config(function($provide){
+	$provide.provide(自定义函数名,注入函数)
+	$provide.factory(自定义函数名,注入函数)
+	$provide.service(自定义函数名,注入函数)
+	$provide.value(自定义函数名,注入函数)
+})
+-->
+	<div ng-controller="showcontroller">
+		<button ng-click="click(1)">早上</button>
+		<button ng-click="click(2)">中午</button>
+		<button ng-click="click(3)">下午</button>
+		<button ng-click="click(4)">晚上</button>
+		<div>内容展示:{{show_txt}}</div>
+	</div>
+	<hr>
+	<div ng-controller="divcontroller">
+		<div>{{text1}}</div>
+	</div>
+	<div ng-controller="div2controller">
+		<div>{{text2}}</div>
+	</div>
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		app.controller("divcontroller",function($scope){
+			$scope.text1 = "通用调用方式";
+		});
+		app.config(function($controllerProvider){
+			$controllerProvider.register("div2controller",function($scope){
+				$scope.text2 = "通用调用其实本质是也样调用的";
+			});
+		});
+
+		app.config(function($provide){
+			$provide.provider("show_1",function(){
+				this.$get=function(){
+					return {
+						val:function(name){
+							return name;
+						}
+					}
+				}
+			})
+		});
+		app.config(function($provide){
+			$provide.service("show_2",function(){
+				return {
+					val:function(name){
+						return name;
+					}
+				}
+			})
+		})
+		app.config(function($provide){
+			$provide.value("show_3",function(name){
+				return name;
+			})
+		});
+		app.config(function($provide){
+			$provide.factory("show_4",function(){
+				return {
+					val:function(name){
+						return name;
+					}
+				}
+			})
+		})
+
+		app.controller("showcontroller",function($scope,show_1,show_2,show_3,show_4){
+			$scope.click = function(index){
+				switch (index){
+					case 1:
+						$scope.show_txt = show_1.val("早上好！");
+						break;//别忘了break,否则会继续执行
+					case 2:
+						$scope.show_txt = show_2.val("中午好！");
+						break;
+					case 3:
+						$scope.show_txt = show_3("下午好！");	
+						break;
+					default:
+						$scope.show_txt = show_4.val("晚上好！");
+				}
+			}
+		})
+	</script>
+
+
+
+</body>
+</html>
+
+
+
