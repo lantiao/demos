@@ -9,16 +9,33 @@
 本实例知识点：
 .. as .. for .. in ..
 .. as .. for .. group by .. for .. in ..
-ng-repeat
+ng-repeat  $index $first $last $middle ?:
+ng-switch on
+ng-switch-when
+ng-switch-default
 ng-options
 ng-change
+ng-class
 -->
 	<div ng-controller="divcontroller">
 		列表
 		<div>
 			<ul>
 				<li ng-repeat="v in data">
-					<span>{{v.id}}--{{v.name}}--{{v.age}}</span>
+
+					<div ng-switch on="{{$index+1}}">
+						<span ng-switch-when=1>case 1</span>
+						<span ng-switch-when=2>case 2</span>
+						<span ng-switch-when=3>case 3</span>
+						<span ng-switch-default>case default</span>
+					</div>
+
+					<span>{{$index+1}}</span>
+					<span>{{$last?'不是最后一项':'是最后一项'}}</span>
+					<span>{{$middle}}</span>
+					<span>{{v.id}}</span>
+					<span>{{v.name}}</span>
+					<span>{{v.age}}</span>
 				</li>
 			</ul>
 		</div>
@@ -45,7 +62,9 @@ ng-change
 			$scope.data = [
 				{id:1,name:"李蕾",age:11},
 				{id:2,name:"韩梅梅",age:12},
-				{id:3,name:"波利",age:9}
+				{id:3,name:"波利",age:9},
+				{id:4,name:"大黄",age:14},
+				{id:5,name:"小丽",age:19}
 			];
 			$scope.a_data = [
 				{id:1,name:"厦门",city:"福建"},
