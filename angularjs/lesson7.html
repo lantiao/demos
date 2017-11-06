@@ -23,26 +23,29 @@ $routeProvider.when(链接地址,对象).when(链接地址,对象).otherwise(对
 	<div ng-view></div>
 	<script type="text/javascript">
 		var app = angular.module('myApp', ['ngRoute']);
-		app.controller("indexcontroller",function($scope){
+		app.controller("indexcontroller",function($scope,$location){
 			$scope.title = "首页";
+			$scope.url = $location.absUrl();
 		})
-		app.controller("listcontroller",function($scope){
+		app.controller("listcontroller",function($scope,$location){
 			$scope.title = "列表页";
+			$scope.url = $location.absUrl();
 		})
-		app.controller("detailcontroller",function($scope,$routeParams){
+		app.controller("detailcontroller",function($scope,$routeParams,$location){
 			$scope.title = "内容页"+$routeParams["id"];
 			console.log($routeParams);
+			$scope.url = $location.absUrl();
 		})
 		app.config(function($routeProvider){
 			$routeProvider.when("/",{
 				controller:"indexcontroller",
-				template:"<div>{{title}}</div>"
+				template:"<div>{{title}}{{url}}</div>"
 			}).when("/list",{
 				controller:"listcontroller",
-				template:"<div>{{title}}</div>"
+				template:"<div>{{title}}{{url}}</div>"
 			}).when("/detail/:id",{
 				controller:"detailcontroller",
-				template:"<div>{{title}}</div>"
+				template:"<div>{{title}}{{url}}</div>"
 			}).otherwise({
 				redirectTo:"/"
 			});			
