@@ -29,8 +29,9 @@ $routeProvider.when(链接地址,对象).when(链接地址,对象).otherwise(对
 		app.controller("listcontroller",function($scope){
 			$scope.title = "列表页";
 		})
-		app.controller("detailcontroller",function($scope){
-			$scope.title = "内容页";
+		app.controller("detailcontroller",function($scope,$routeParams){
+			$scope.title = "内容页"+$routeParams["id"];
+			console.log($routeParams);
 		})
 		app.config(function($routeProvider){
 			$routeProvider.when("/",{
@@ -39,7 +40,7 @@ $routeProvider.when(链接地址,对象).when(链接地址,对象).otherwise(对
 			}).when("/list",{
 				controller:"listcontroller",
 				template:"<div>{{title}}</div>"
-			}).when("/detail",{
+			}).when("/detail/:id",{
 				controller:"detailcontroller",
 				template:"<div>{{title}}</div>"
 			}).otherwise({
