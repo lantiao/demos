@@ -27,7 +27,8 @@ ng-class
 		<div>
 			<ul>
 				<!-- 通过key/value方式声明属性名称和匹配的字符内容,如果属性名称为"$" -->
-				<li ng-repeat="v in data|orderBy:'-age'|limitTo:3|filter:{$:19}">
+				<!-- <li ng-repeat="v in data|orderBy:'-age'|limitTo:3|filter:{$:19}"> -->
+				<li ng-repeat="v in data|orderBy:'-age'|limitTo:3|filter:young">
 
 					<div ng-switch on="{{$index+1}}">
 						<span ng-switch-when=1>case 1</span>
@@ -88,6 +89,10 @@ ng-class
 					}
 				}
 				
+			}
+			//自定义filter函数 返回false的数据将被过滤掉
+			$scope.young = function(val){
+				return val.age > 10 && val.age < 15;
 			}
 		});
 		
