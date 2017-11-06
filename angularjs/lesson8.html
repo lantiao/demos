@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>lesson8</title>
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+</head>
+<body>
+<!-- 
+本实例知识点：
+前后端通信
+$http
+1. $http(http对象).then(成功回调函数,失败回调函数) 回调函数function(data) data是一个对象data,status,headers,config
+2. $http(http对象).succes(成功回调函数).error(失败回调函数)
+1,2两种表达的区别在于回调函数返回参数不同,1比2返回结构更完整,2的data返回值相当于1的data.data，具体看以下实例。
+-->
+	<div ng-controller="divcontroller">
+		<input type="text" ng-model="name">
+		<input type="button" ng-click="click()" value="发送" />
+		<span>返回大写数据:{{result}}</span>
+	</div>
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		app.controller("divcontroller",function($scope,$http){
+			// $scope.click = function(){
+			// 	$http({
+			// 		method:"GET",//GET POST ...
+			// 		url:"http://127.0.0.1:8080/index.php",
+			// 		//测试error
+			// 		// url:"http://127.0.0.1:8080/index2.php",
+			// 		params:{
+			// 			name:$scope.name
+			// 		}
+			// 	}).then(function(data){
+			// 		$scope.result = data.data;
+			// 	}, function(data){
+			// 		$scope.result = data.data;
+			// 	});				
+			// }
+
+			$scope.click = function(){
+				$http({
+					method:"GET",
+					url:"http://127.0.0.1:8080/index.php",
+					//测试error
+					// url:"http://127.0.0.1:8080/index2.php",
+					params:{
+						name:$scope.name
+					}
+				}).success(function(data){
+					$scope.result = data;
+				}).error(function(data){
+					$scope.result = data;
+				});				
+			}
+
+		});
+	</script>
+</body>
+</html>
+
+
+
