@@ -47,16 +47,20 @@ app.value(自定义函数名,注入函数)
 				}
 			}
 		})
+		app.constant("$const",{
+			Author:"lantiao",
+			Book:"angularjs"
+		});
 
 
-		app.controller("showcontroller",function($scope,$show_4,$show_2,$show_3,$show_1){
+		app.controller("showcontroller",function($scope,$show_4,$show_2,$show_3,$show_1,$const){
 			$scope.click = function(index){
 				switch (index){
 					case 1:
-						$scope.show_txt = $show_1.val("早上好！");
+						$scope.show_txt = $show_1.val("早上好！"+$const.Author);
 						break;//别忘了break,否则会继续执行
 					case 2:
-						$scope.show_txt = $show_2.val("中午好！");
+						$scope.show_txt = $show_2.val("中午好！"+$const.Book);
 						break;
 					case 3:
 						$scope.show_txt = $show_3("下午好！");	
