@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>lesson10</title>
+    <script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+</head>
+<body>
+<!-- 
+本实例知识点：
+$cacheFactory
+.info()
+.put(key,value)
+.get(key)
+.remove(key)
+.removeAll() 移除全部的缓存内容
+-->
+    <div ng-controller="divcontroller">
+        <div>
+            获取缓存信息
+            <div>
+                <input type="button" ng-click="getinfo()" value="获取缓存信息">
+                {{info}}
+            </div>          
+            添加缓存
+            <div>
+                key:<input type="text" ng-model="key">
+                val:<input type="text" ng-model="val">
+                <input type="button" ng-click="add()" value="添加">
+            </div>
+            获取缓存
+            <div>
+                key:<input type="text" ng-model="getkey">
+                {{getval}}
+                <input type="button" ng-click="get()" value="获取">
+            </div>    
+
+            删除某key缓存
+            <div>
+                key:<input type="text" ng-model="removekey">
+                <input type="button" ng-click="remove()" value="删除">
+            </div>
+            删除所有
+            <div>
+                <input type="button" ng-click="removeall()" value="删除全部">
+            </div>
+            
+        </div>
+        
+    </div>
+    <script type="text/javascript">
+        var app = angular.module('myApp', []);
+        //添加缓存服务
+        app.service("$cache",function($cacheFactory){
+            return $cacheFactory("test");
+        })
+        app.controller("divcontroller",function($scope,$cache){
+            $scope.add = function(){
+                $cache.put($scope.key,$scope.val);
+            }
+            $scope.get = function(){
+                val = $cache.get($scope.getkey)
+                $scope.getval = val?val:"空值";
+            }
+            $scope.getinfo = function(){
+                $scope.info = $cache.info();
+            }
+            $scope.remove = function(){
+                $cache.remove($scope.removekey);
+            }
+            $scope.removeall = function(){
+                $cache.removeAll();
+            }
+        });
+           
+    </script>
+</body>
+</html>
+
+
+

@@ -9,6 +9,16 @@
 本实例知识点：
 前后端通信
 $http
+$http({
+	method:
+	url:
+	data:
+	params:
+	transformRequest:
+	transformResponse:
+	cache:
+	timeout:
+})
 1. $http(http对象).then(成功回调函数,失败回调函数) 回调函数function(data) data是一个对象data,status,headers,config
 2. $http(http对象).succes(成功回调函数).error(失败回调函数)
 1,2两种表达的区别在于回调函数返回参数不同,1比2返回结构更完整,2的data返回值相当于1的data.data，具体看以下实例。
