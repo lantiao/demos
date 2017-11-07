@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>lesson7</title> 
+    <script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+</head>
+<body>
+<!-- 
+本实例知识点：
+$delegate
+服务的装饰器 可以对原来的服务进行优化和替换
+app.decorator('serviceName',Fn)
+
+服务的多例性
+-->
+    <div ng-controller="divcontroller">
+    <div>
+        <span>{{info.name}}</span>
+        <span>{{info.age}}</span>
+        <span>{{info.book}}</span>
+    </div>
+    </div>
+
+    <div ng-controller="c_1">
+        <span>{{tc.name}}</span>
+        <span>{{tc.cid}}</span>
+        <button ng-click="reset()">重置</button>
+    </div>
+    <div ng-controller="c_2">
+        <span>{{tc.name}}</span>
+        <span>{{tc.cid}}</span>
+        <button ng-click="reset()">重置</button>        
+    </div>
+
+    <script type="text/javascript">
+        var app = angular.module('myApp', []);
+        app.factory("$student",function(){
+            return {
+                name:"lantiao",
+                age:11
+            }
+        })
+        app.decorator("$student",function($delegate){
+            $delegate.book = "angularjs";
+            return $delegate;
+        })
+
+
+        function teacher(json){
+            angular.extend(this,json);
+            this.reset = function(){
+                this.name = "teacher1",
+                this.cid = "三年一班"
+            }
+        }
+
+        teacher.create = function(){
+            return new teacher({
+                name:"老师名称",
+                cid:"六年三班"
+            });
+        }
+
+        app.factory("$teacher",function(){
+            return {
+                create:teacher.create
+            }
+        })
+
+        app.controller("divcontroller",function($scope,$student){
+            $scope.info = $student;
+        })
+
+        app.controller("c_1",function($scope,$teacher){
+            $scope.tc = $teacher.create();
+            $scope.reset = function(){
+                $scope.tc.reset();
+            } 
+        });
+
+        app.controller("c_2",function($scope,$teacher){
+            $scope.tc = $teacher.create();
+        });
+
+    </script>
+</body>
+</html>
+
+
+
