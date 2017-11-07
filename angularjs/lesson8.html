@@ -3,6 +3,8 @@
 <head>
 	<title>lesson8</title>
 	<script type="text/javascript" src="https://code.angularjs.org/latest/angular.min.js"></script>
+	<!-- 当需要使用$resource对象时导入 -->
+	<script type="text/javascript" src="https://code.angularjs.org/latest/angular-resource.min.js"></script>
 </head>
 <body>
 <!-- 
@@ -10,27 +12,46 @@
 前后端通信
 $http
 $http({
-	method:
+	method:  GET, POST, PUT, DELETE, JSONP
 	url:
 	data:
-	params:
-	transformRequest:
-	transformResponse:
-	cache:
-	timeout:
+	params:对象，这次行动预先设定的参数。如果任何参数的值是一个函数，当一个参数值每一次需要获得请求时都会被执行（除非该参数被忽略的）
+	transformRequest:函数/函数的数组。转换函数或者一个包含转换函数的数组。转换函数获取http请求体和请求头，并且返回他们的转换版（通常是序列化）
+	transformResponse:函数/函数的数组。转换函数或者一个包含转换函数的数组。转换函数获取http响应体和响应头，并且返回他们的转换版（通常是序列化）
+	cache: 如果为true，一个默认的$http缓存将被作为请求的缓存，否则如果存在一个用$cacheFactory创建的缓存实例，则将用于缓存
+	timeout:数值，毫秒，超时则让请求中止。
 })
 1. $http(http对象).then(成功回调函数,失败回调函数) 回调函数function(data) data是一个对象data,status,headers,config
 2. $http(http对象).succes(成功回调函数).error(失败回调函数)
 1,2两种表达的区别在于回调函数返回参数不同,1比2返回结构更完整,2的data返回值相当于1的data.data，具体看以下实例。
+
+
+$resource	
+$resource(url地址,要发送的参数对象,自定义函数对象)
+.get(参数对象,成功回调函数,失败回调函数)
+.query(参数对象,成功回调函数,失败回调函数)
+get与query的区别在于get要求获得的是一个对象结构,而query要求获得的是一数组对象结构
+.save(params, payload, successFn, errorFn) params对象参数会转成url生成在链接上,  payload:代表请求发送的数据体 
+.delete(params, payload, successFn, errorFn)  
+.remove(params, payload, successFn, errorFn)  
 -->
 	<div ng-controller="divcontroller">
 		<input type="text" ng-model="name">
 		<input type="button" ng-click="click()" value="发送" />
+		<input type="button" ng-click="rsaveclick()" value="resource save方式发送" />
+		<span>返回大写数据:{{result}}</span>
+	</div>
+	<hr>
+	<div ng-controller="rcontroller">
+		<input type="text" ng-model="name">
+		<input type="button" ng-click="rclick()" value="resource方式发送" />
+		<input type="button" ng-click="sclick()" value="resource自定义方式发送" />
 		<span>返回大写数据:{{result}}</span>
 	</div>
 	<script type="text/javascript">
-		var app = angular.module('myApp', []);
-		app.controller("divcontroller",function($scope,$http){
+		//ngResource 导入$resource对象
+		var app = angular.module('myApp', ['ngResource']);
+		app.controller("divcontroller",function($scope,$http,$resource){
 			// $scope.click = function(){
 			// 	$http({
 			// 		method:"GET",//GET POST ...
@@ -61,8 +82,54 @@ $http({
 				}).error(function(data){
 					$scope.result = data;
 				});				
-			}
+			};
 
+			$scope.rsaveclick = function(){
+				obj = $resource("http://127.0.0.1:8080/save.php")
+				obj.save({username:"hahahah",isok:true},{m:1111},function(data){
+					console.log(data);
+					$scope.result = data;
+				},function(err){
+					console.log(err);
+					$scope.result = err;
+				})
+			}
+		});
+		app.factory("$diyResource",function($resource){
+			return $resource(
+				"/diy.php",
+				{
+					p1:"lantiao",
+					p2:"book"
+				},
+				{
+					charge:{//自定义函数
+						method:"POST",
+						params: {charge: true}, //表示需要作为请求的一部分来传递的参数
+						isArr:false
+					}
+				});
+		});
+		app.controller("rcontroller",function($scope,$resource,$diyResource){
+			$scope.rclick = function(){
+				// obj = $resource("http://127.0.0.1:8080/getOne.php");
+				// obj.get({name:$scope.name},function(resp){
+
+				obj = $resource("http://127.0.0.1:8080/getArr.php");
+				obj.query({name:$scope.name},function(resp){
+					$scope.result = resp;
+				},function(e){
+					console.log(e);
+					$scope.result = e;
+				});
+			}
+			$scope.sclick = function(){
+				var o = new $diyResource();
+				//调用自定义函数是要加$
+				o.$charge(function(){
+
+				});
+			}
 		});
 	</script>
 </body>
